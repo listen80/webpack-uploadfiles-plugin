@@ -1,0 +1,24 @@
+{
+  "description": "webpack-uploadfiles-plugin",
+  "directories": {},
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "m13631624455@163.com",
+      "name": "listen80"
+    }
+  ],
+  "dependencies": {
+    "colors": "^1.1.2",
+    "scp2": "^0.5.0",
+    "webpack": "^2.2.0"
+  },
+  "name": "webpack-uploadfiles-plugin",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
