@@ -2,6 +2,9 @@
 
 
 ##Usage
+in your webpack.config.js
+
+var sftp = require('
 <pre>
 plugins: [
         new webpack.DefinePlugin({
