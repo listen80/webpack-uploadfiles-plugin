@@ -12,9 +12,6 @@ function sftpFile(opt) {
 	this.password = opt.password;
 	this.done = opt.done;
 	this.msg = opt.msg || '';
-}
-
-sftpFile.prototype.sftp = function() {
 	var _this = this;
 
 	scp2.defaults({
@@ -23,7 +20,10 @@ sftpFile.prototype.sftp = function() {
 		username: _this.username,
 		password: _this.password
 	});
+}
 
+sftpFile.prototype.sftp = function() {
+	var _this = this;
 	function getFile(dir) {
 		var arr = [];
 
@@ -43,7 +43,6 @@ sftpFile.prototype.sftp = function() {
 
 		if (fs.existsSync(dir)) {
 			var stat = fs.statSync(dir);
-			console.log(1)
 			if (stat.isFile()) {
 				arr.push(dir)
 			} else if (stat.isDirectory()) {
@@ -68,19 +67,18 @@ sftpFile.prototype.sftp = function() {
 				} else {
 					if (i === 0) {
 						console.log('\n' + _this.msg.magenta);
-						console.log('start uploading to '.cyan + _this.host.yellow)
+						console.log('Dist: '.red + _this.host.yellow);
 					}
-					let log = path.basename(filesArr[i]).white + ' ok!'.green;
+					let log = ('File' + (i + 1) + ': ').cyan + path.basename(filesArr[i]).white + ' ok!'.green;
 					console.log(log);
 					upload(i + 1);
 				}
 			});
 		} else {
 			scp2.close();
-			let log = i === 0 ? '\nnone is uploaded'.red : ('all done').green;
-			let d = new Date;
-			let time = ' @' + new Date().toLocaleString();
-			console.log(log + time.red);
+			let log = i === 0 ? '\nNone: done'.red : ('All: done').green;
+			let time = new Date().toLocaleString().red;
+			console.log(log + '\n' + time);
 			_this.done && _this.done();
 		}
 	}
