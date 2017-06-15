@@ -4,28 +4,11 @@
 ##Usage
 in your webpack.config.js
 
-var sftp = require('
+var webpack-uploadfiles-plugin = require('webpack-uploadfiles-plugin');
+
 <pre>
 plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false,
-                screw_ie8: false
-            },
-            output: {
-                screw_ie8: false //支持IE8
-            }
-        }),
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
-        }),
-        new sftp({
+        new webpack-uploadfiles-plugin({
             port: 'port',
             host: 'host',
             username: 'username',
