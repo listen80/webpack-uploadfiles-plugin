@@ -1,21 +1,22 @@
 # webpack-uploadfiles-plugin
 
+`in your webpack.conf.js`
 
-##Usage
-in your webpack.config.js
-
-var webpack-uploadfiles-plugin = require('webpack-uploadfiles-plugin');
 
 <pre>
+var webpackUploadfilesPlugin = require('webpack-uploadfiles-plugin');
+
 plugins: [
-        new webpack-uploadfiles-plugin({
-            port: 'port',
-            host: 'host',
-            username: 'username',
-            password: 'password',
-            from: 'dist',
-            to: 'remote_dir',
-            msg: 'what you say!'
-        })
-    ]
+    //...
+    new webpackUploadfilesPlugin({
+        port: 'port',
+        host: 'host',
+        username: 'username',
+        password: 'password',
+        from: 'dist',
+        to: 'remote_dir',
+        msg: 'what you say!'
+    })
+    //...
+]
 </pre>
