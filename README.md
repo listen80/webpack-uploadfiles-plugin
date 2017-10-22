@@ -1,8 +1,5 @@
 # webpack-uploadfiles-plugin
-
 `in your webpack.conf.js`
-
-
 <pre>
 var webpackUploadfilesPlugin = require('webpack-uploadfiles-plugin');
 
@@ -14,8 +11,11 @@ plugins: [
         username: 'username',
         password: 'password',
         from: 'dist',
+        cwd: 'dist',
         to: 'remote_dir',
-        msg: 'what you say!'
+        start: '开始上传',
+        end: '上传成功',
+        ext: []
     })
     //...
 ]
