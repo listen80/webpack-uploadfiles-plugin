@@ -1,17 +1,10 @@
-let scp2 = require('scp2');
-let colors = require('colors');
-let path = require('path');
-let fs = require('fs');
+var scp2 = require('scp2');
+var colors = require('colors');
+var path = require('path');
+var fs = require('fs');
 
-function sftpFile(opt) {
-	this.from = opt.from;
-	this.to = opt.to;
-	this.port = opt.port;
-	this.host = opt.host;
-	this.username = opt.username;
-	this.password = opt.password;
-	this.done = opt.done;
-	this.msg = opt.msg || '';
+function scpFile(opt) {
+	Object.assign(this, opt);
 	var _this = this;
 
 	scp2.defaults({
@@ -22,34 +15,31 @@ function sftpFile(opt) {
 	});
 }
 
-sftpFile.prototype.sftp = function() {
+scpFile.prototype.sftp = function() {
 	var _this = this;
+	var ext = _this.ext || [];
 	function getFile(dir) {
 		var arr = [];
 
 		function recursion(dir) {
-			fs.readdirSync(dir).forEach(function(v) {
-				var t = path.join(dir, v);
-				var stat = fs.statSync(t);
-				if (stat.isFile()) {
-					arr.push(t);
-				} else if (stat.isDirectory()) {
-					recursion(t);
-				} else {
-					console.log('error');
-				}
-			});
-		}
-
-		if (fs.existsSync(dir)) {
 			var stat = fs.statSync(dir);
 			if (stat.isFile()) {
-				arr.push(dir)
+				if(ext.length && ext.indexOf(path.extname(dir)) === -1) {
+					// arr.push(dir)
+				} else {
+					arr.push(dir)
+				}
 			} else if (stat.isDirectory()) {
-				recursion(dir);
+				fs.readdirSync(dir).forEach(function(v) {
+					recursion(path.join(dir, v));
+				});
 			} else {
 				console.log('not file or path');
 			}
+		}
+
+		if (fs.existsSync(dir)) {
+			recursion(dir);
 		} else {
 			console.log('not exist' + dir);
 		}
@@ -58,39 +48,38 @@ sftpFile.prototype.sftp = function() {
 	}
 
 	var filesArr = getFile(_this.from);
-
+	var all = filesArr.length;
+	var cwd = _this.cwd;
 	function upload(i) {
 		if (filesArr[i]) {
-			scp2.upload(filesArr[i], path.join(_this.to, filesArr[i]), function(err) {
+			console.log('\n' + (i + 1) + '/' + all + ': ' + filesArr[i]);
+			var dist = path.join(_this.to, path.relative(cwd, filesArr[i]));
+			scp2.upload(filesArr[i], dist, function(err) {
 				if (err) {
 					console.error(err);
 				} else {
-					if (i === 0) {
-						console.log('\n' + _this.msg.magenta);
-						console.log('Dist: '.red + _this.host.yellow);
-					}
-					let log = ('File' + (i + 1) + ': ').cyan + path.basename(filesArr[i]).white + ' ok!'.green;
-					console.log(log);
+					var log = 'ok!'.green;
+					console.log(log + ':' + dist);
 					upload(i + 1);
 				}
 			});
 		} else {
 			scp2.close();
-			let log = i === 0 ? '\nNone: done'.red : ('All: done').green;
-			let time = new Date().toLocaleString().red;
-			console.log(log + '\n' + time);
-			_this.done && _this.done();
+			var log = i === 0 ? '\nNone: done'.red : ('\nAll: done').green;
+			var time = new Date().toLocaleString().red;
+			console.log(log + '@' + time);
+			_this.end && console.log(_this.end.green)
 		}
 	}
-
+	_this.start && console.log(_this.start.yellow)
 	upload(0);
 }
 
-sftpFile.prototype.apply = function(compiler) {
+scpFile.prototype.apply = function(compiler) {
 	var _this = this;
 	compiler.plugin("done", function(compilation) {
 		_this.sftp();
 	});
 }
 
-module.exports = sftpFile;
+module.exports = scpFile;
