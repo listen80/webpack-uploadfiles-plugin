@@ -1,6 +1,8 @@
 # webpack-uploadfiles-plugin
 `in your webpack.conf.js`
-<pre>
+
+## config
+```js
 var webpackUploadfilesPlugin = require('webpack-uploadfiles-plugin');
 
 plugins: [
@@ -19,4 +21,4 @@ plugins: [
     })
     //...
 ]
-</pre>
+```
