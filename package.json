@@ -12,6 +12,16 @@
     "scp2": "^0.5.0"
   },
   "name": "webpack-uploadfiles-plugin",
-  "readme": "webpack-uploadfiles-plugin",
-  "version": "1.0.3"
+  "readme": "README.md",
+  "version": "1.0.3",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["webpack", "upload", "plugin"],
+  "author": "listen80",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/listen80/webpack-uploadfiles-plugin.git"
+  }
 }
