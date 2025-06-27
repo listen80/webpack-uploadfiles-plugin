@@ -12,8 +12,36 @@ require('colors');
  * @param {Object} opt - 配置对象，包含端口、主机、用户名、密码等信息
  */
 function scpFile(opt) {
+	const {
+		// 服务器地址
+		host = '',
+		// 服务器端口号
+		port = '',
+		// 登录服务器的用户名
+		username = '',
+		// 登录服务器的密码
+		password = '',
+		// 本地待上传文件的目录，默认为 dist
+		from = 'dist',
+		// 当前工作目录，默认为 dist，默认dist下文件集会去除cwd路径到to路径
+		cwd = 'dist',
+		// 服务器上的远程目录
+		to = 'dist',
+		// 开始上传时的提示信息
+		start = '开始上传',
+		// 上传成功时的提示信息
+		end = '上传成功',
+		// 需要上传的文件扩展名列表，空数组表示上传所有文件
+		ext = []
+	} = opt;
+	if (!host || !port || !username || !password) {
+		console.log('请配置host、port、username、password');
+		return;
+	}
 	// 将配置对象的属性合并到当前实例
-	Object.assign(this, opt);
+	Object.assign(this, {
+		host, port, username, password, from, cwd, to, start, end, ext
+	});
 	// 保存当前实例的引用
 	var _this = this;
 	// 初始化缓存对象
